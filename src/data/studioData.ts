@@ -70,7 +70,7 @@ export interface ClientReview {
 export const STUDIO_MEDIA = {
   heroBack: heroBackTattoo,
   jokerConcept: conceptJokerPortrait,
-  tattooMachine: '/assets/aistudio/image_3594c7f1.png',
+  tattooMachine: './assets/aistudio/image_3594c7f1.png',
 };
 
 export const GALLERY_WORKS: GalleryWork[] = [
@@ -81,7 +81,7 @@ export const GALLERY_WORKS: GalleryWork[] = [
     artist: 'Каэлен Восс',
     placement: 'Плечо и дельта',
     sessions: '2 сеанса · 11 ч',
-    image: '/assets/aistudio/image_20db194a.png',
+    image: './assets/aistudio/image_20db194a.png',
     featured: true,
     description:
       'Контрастный реализм Black & Grey: древний коринфский шлем, вписанный в рукописный греческий меандр и разряды молнии.',
@@ -93,7 +93,7 @@ export const GALLERY_WORKS: GalleryWork[] = [
     artist: 'Данте Рук',
     placement: 'Полурукав на плече',
     sessions: '2 сеанса · 13 ч',
-    image: '/assets/aistudio/image_64b2d370.png',
+    image: './assets/aistudio/image_64b2d370.png',
     description:
       'Глубоководный змей, обвивающий стальной якорь, с холодными бирюзово-графитовыми акцентами и динамикой брызг в негативном пространстве.',
   },
@@ -104,7 +104,7 @@ export const GALLERY_WORKS: GalleryWork[] = [
     artist: 'Елена Мороз',
     placement: 'Грудь и ключица',
     sessions: '1 сеанс · 7.5 ч',
-    image: '/assets/aistudio/image_cb238949.png',
+    image: './assets/aistudio/image_cb238949.png',
     description:
       'Анатомически выверенный сюрреалистичный портрет, рассечённый змеёй, уходящей к шее. Исполнен тончайшим випшейдингом.',
   },
