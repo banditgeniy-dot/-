@@ -18,31 +18,13 @@ export function CustomCursor() {
     let mouseY = window.innerHeight / 2;
     let ringX = mouseX;
     let ringY = mouseY;
-    let rafId = 0;
-
-    const onMove = (e: MouseEvent) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-      setIsVisible(true);
-
-      const target = e.target as HTMLElement | null;
-      const cursorTarget = target?.closest('[data-cursor]') as HTMLElement | null;
-      const interactive = target?.closest('a, button, input, select, textarea');
-
-      if (cursorTarget) {
-        setCursorLabel(cursorTarget.getAttribute('data-cursor'));
-      } else if (interactive) {
-        setCursorLabel('');
-      } else {
-        setCursorLabel(null);
-      }
-    };
-
-    const onLeave = () => setIsVisible(false);
+    let rafId: number | null = null;
 
     const tick = () => {
-      ringX += (mouseX - ringX) * 0.22;
-      ringY += (mouseY - ringY) * 0.22;
+      const dx = mouseX - ringX;
+      const dy = mouseY - ringY;
+      ringX += dx * 0.24;
+      ringY += dy * 0.24;
 
       if (dotRef.current) {
         dotRef.current.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0)`;
@@ -50,17 +32,48 @@ export function CustomCursor() {
       if (ringRef.current) {
         ringRef.current.style.transform = `translate3d(${ringX}px, ${ringY}px, 0)`;
       }
-      rafId = requestAnimationFrame(tick);
+
+      if (Math.abs(dx) > 0.2 || Math.abs(dy) > 0.2) {
+        rafId = requestAnimationFrame(tick);
+      } else {
+        rafId = null;
+      }
     };
+
+    const scheduleTick = () => {
+      if (rafId === null) {
+        rafId = requestAnimationFrame(tick);
+      }
+    };
+
+    const onMove = (e: MouseEvent) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      setIsVisible((prev) => (prev ? prev : true));
+
+      const target = e.target as HTMLElement | null;
+      const cursorTarget = target?.closest('[data-cursor]') as HTMLElement | null;
+      const interactive = target?.closest('a, button, input, select, textarea');
+
+      const nextLabel = cursorTarget
+        ? cursorTarget.getAttribute('data-cursor')
+        : interactive
+        ? ''
+        : null;
+      setCursorLabel((prev) => (prev === nextLabel ? prev : nextLabel));
+
+      scheduleTick();
+    };
+
+    const onLeave = () => setIsVisible(false);
 
     window.addEventListener('mousemove', onMove, { passive: true });
     document.addEventListener('mouseleave', onLeave);
-    rafId = requestAnimationFrame(tick);
 
     return () => {
       window.removeEventListener('mousemove', onMove);
       document.removeEventListener('mouseleave', onLeave);
-      cancelAnimationFrame(rafId);
+      if (rafId !== null) cancelAnimationFrame(rafId);
     };
   }, []);
 

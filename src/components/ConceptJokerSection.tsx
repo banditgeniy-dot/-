@@ -10,7 +10,7 @@ export function ConceptJokerSection() {
   return (
     <section
       id="concept"
-      className="border-t border-white/10 bg-[#111111] py-20 lg:py-28"
+      className="cv-auto border-t border-white/10 bg-[#111111] py-20 lg:py-28"
     >
       <div className="mx-auto max-w-[1440px] px-6 lg:px-12">
         <div className="grid grid-cols-1 items-stretch gap-10 lg:grid-cols-12 lg:gap-12">
@@ -50,7 +50,7 @@ export function ConceptJokerSection() {
                       <h3 className="font-display text-lg font-bold tracking-tight">
                         <span
                           className={`mr-2.5 font-mono text-xs tabular-nums ${
-                            isSelected ? 'text-[#dc2626]' : 'text-zinc-500'
+                            isSelected ? 'text-[#dc2626]' : 'text-zinc-400'
                           }`}
                         >
                           {pillar.index}.
@@ -59,7 +59,7 @@ export function ConceptJokerSection() {
                       </h3>
                       <span
                         className={`text-xs font-medium ${
-                          isSelected ? 'text-zinc-600' : 'text-zinc-500'
+                          isSelected ? 'text-zinc-700' : 'text-zinc-400'
                         }`}
                       >
                         {pillar.calloutLabel}
@@ -84,6 +84,10 @@ export function ConceptJokerSection() {
               <img
                 src={STUDIO_MEDIA.jokerConcept}
                 alt="Высококонтрастный монохромный портрет в духе Джокера с интегрированной татуировкой вдоль шрамов на щеке и шее"
+                width={720}
+                height={960}
+                loading="lazy"
+                decoding="async"
                 referrerPolicy="no-referrer"
                 className="h-full w-full object-cover object-top"
               />

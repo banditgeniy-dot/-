@@ -91,7 +91,7 @@ export function BookingFooter({
   return (
     <>
       {/* Booking Consultation Section */}
-      <section id="booking" className="border-t border-white/10 bg-[#111111] py-20 lg:py-28">
+      <section id="booking" className="cv-auto border-t border-white/10 bg-[#111111] py-20 lg:py-28">
         <div className="mx-auto max-w-[1440px] px-6 lg:px-12">
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-12">
             {/* Left: Studio Contact & Concierge Info */}
@@ -111,20 +111,20 @@ export function BookingFooter({
 
               <div className="mt-10 space-y-6 border-t border-white/10 pt-8 text-sm">
                 <div>
-                  <p className="text-xs text-zinc-500">Адрес ателье</p>
+                  <p className="text-xs text-zinc-400">Адрес ателье</p>
                   <p className="mt-1 font-medium text-white">
                     142 Mercer Street, Penthouse Suite B, Нью-Йорк
                   </p>
                 </div>
                 <div className="grid grid-cols-2 gap-6">
                   <div>
-                    <p className="text-xs text-zinc-500">Часы работы</p>
+                    <p className="text-xs text-zinc-400">Часы работы</p>
                     <p className="mt-1 font-mono text-xs tabular-nums text-zinc-300">
                       Вт – Вс · 11:00 – 20:00
                     </p>
                   </div>
                   <div>
-                    <p className="text-xs text-zinc-500">Консьерж-служба</p>
+                    <p className="text-xs text-zinc-400">Консьерж-служба</p>
                     <a
                       href="mailto:concierge@omgtattoo.studio"
                       className="mt-1 block font-medium text-white transition-colors hover:text-[#dc2626]"
@@ -327,7 +327,7 @@ export function BookingFooter({
             <a href="#home" className="font-display text-xl font-extrabold tracking-tight text-white">
               OMG
             </a>
-            <span className="text-xs text-zinc-500">
+            <span className="text-xs text-zinc-400">
               142 Mercer Street, Сохо, Нью-Йорк
             </span>
           </div>
@@ -350,7 +350,7 @@ export function BookingFooter({
             </a>
           </div>
 
-          <p className="text-xs text-zinc-500">
+          <p className="text-xs text-zinc-400">
             © {new Date().getFullYear()} Тату-ателье OMG. Все права защищены.
           </p>
         </div>

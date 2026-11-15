@@ -94,6 +94,10 @@ export default function App() {
         <img
           src={STUDIO_MEDIA.tattooMachine}
           alt="Тату-машинка для брызг чернил"
+          width={56}
+          height={56}
+          loading="lazy"
+          decoding="async"
           className="h-full w-full scale-125 object-cover object-[65%_35%]"
         />
         <span

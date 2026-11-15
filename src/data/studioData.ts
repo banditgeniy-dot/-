@@ -1,12 +1,16 @@
-import heroBackTattoo from '../assets/images/hero_back_tattoo_1794753204768.jpg';
-import conceptJokerPortrait from '../assets/images/concept_joker_portrait_1794753204637.jpg';
-import gallerySpineFineline from '../assets/images/gallery_spine_fineline_1794753205902.jpg';
-import galleryGothicSleeve from '../assets/images/gallery_gothic_sleeve_1794753206982.jpg';
-import galleryMythologyArm from '../assets/images/gallery_mythology_arm_1794753207347.jpg';
-import galleryDaggerBlackwork from '../assets/images/gallery_dagger_blackwork_1794753208457.jpg';
-import artistFounderPortrait from '../assets/images/artist_founder_portrait_1794753209423.jpg';
-import artistFinelinePortrait from '../assets/images/artist_fineline_portrait_1794753208948.jpg';
-import artistDarkartPortrait from '../assets/images/artist_darkart_portrait_1794753210585.jpg';
+import heroBackCutout from '../assets/optimized/hero_back_cutout.webp';
+import conceptJokerPortrait from '../assets/optimized/concept_joker.webp';
+import gallerySpineFineline from '../assets/optimized/gallery_spine.webp';
+import galleryGothicSleeve from '../assets/optimized/gallery_gothic.webp';
+import galleryMythologyArm from '../assets/optimized/gallery_mythology.webp';
+import galleryDaggerBlackwork from '../assets/optimized/gallery_dagger.webp';
+import artistFounderPortrait from '../assets/optimized/artist_founder.webp';
+import artistFinelinePortrait from '../assets/optimized/artist_fineline.webp';
+import artistDarkartPortrait from '../assets/optimized/artist_darkart.webp';
+import workSpartan from '../assets/optimized/work_spartan.webp';
+import workDragon from '../assets/optimized/work_dragon.webp';
+import workMedusa from '../assets/optimized/work_medusa.webp';
+import tattooMachineWebp from '../assets/optimized/tattoo_machine.webp';
 
 export type TattooStyle =
   | 'Все'
@@ -68,9 +72,9 @@ export interface ClientReview {
 }
 
 export const STUDIO_MEDIA = {
-  heroBack: heroBackTattoo,
+  heroBack: heroBackCutout,
   jokerConcept: conceptJokerPortrait,
-  tattooMachine: './assets/aistudio/image_3594c7f1.png',
+  tattooMachine: tattooMachineWebp,
 };
 
 export const GALLERY_WORKS: GalleryWork[] = [
@@ -81,7 +85,7 @@ export const GALLERY_WORKS: GalleryWork[] = [
     artist: 'Каэлен Восс',
     placement: 'Плечо и дельта',
     sessions: '2 сеанса · 11 ч',
-    image: './assets/aistudio/image_20db194a.png',
+    image: workSpartan,
     featured: true,
     description:
       'Контрастный реализм Black & Grey: древний коринфский шлем, вписанный в рукописный греческий меандр и разряды молнии.',
@@ -93,7 +97,7 @@ export const GALLERY_WORKS: GalleryWork[] = [
     artist: 'Данте Рук',
     placement: 'Полурукав на плече',
     sessions: '2 сеанса · 13 ч',
-    image: './assets/aistudio/image_64b2d370.png',
+    image: workDragon,
     description:
       'Глубоководный змей, обвивающий стальной якорь, с холодными бирюзово-графитовыми акцентами и динамикой брызг в негативном пространстве.',
   },
@@ -104,7 +108,7 @@ export const GALLERY_WORKS: GalleryWork[] = [
     artist: 'Елена Мороз',
     placement: 'Грудь и ключица',
     sessions: '1 сеанс · 7.5 ч',
-    image: './assets/aistudio/image_cb238949.png',
+    image: workMedusa,
     description:
       'Анатомически выверенный сюрреалистичный портрет, рассечённый змеёй, уходящей к шее. Исполнен тончайшим випшейдингом.',
   },

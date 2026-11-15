@@ -1,4 +1,4 @@
-import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
+import { forwardRef, useCallback, useEffect, useImperativeHandle, useRef } from 'react';
 
 export interface InkCanvasHandle {
   sprayInk: (originX: number, originY: number, intensity?: number) => void;
@@ -31,10 +31,10 @@ interface InkCanvasProps {
 }
 
 const INK_PALETTE = [
-  { fill: '#f5f5f5', weight: 0.24 }, // Titanium white ink
-  { fill: '#dc2626', weight: 0.30 }, // Crimson accent ink
-  { fill: '#111111', highlight: 'rgba(255,255,255,0.34)', weight: 0.34 }, // Glossy obsidian black ink
-  { fill: '#7c3aed', weight: 0.12 }, // Purple needle cartridge spark
+  { fill: '#f5f5f5', weight: 0.24 },
+  { fill: '#dc2626', weight: 0.30 },
+  { fill: '#111111', highlight: 'rgba(255,255,255,0.34)', weight: 0.34 },
+  { fill: '#7c3aed', weight: 0.12 },
 ];
 
 function pickInkColor() {
@@ -55,15 +55,26 @@ export const InkCanvas = forwardRef<InkCanvasHandle, InkCanvasProps>(function In
   const dropletsRef = useRef<InkDroplet[]>([]);
   const keepStainsRef = useRef(keepStains);
   const rafRef = useRef<number | null>(null);
+  const startLoopRef = useRef<() => void>(() => {});
 
   useEffect(() => {
     keepStainsRef.current = keepStains;
+    if (!keepStains && dropletsRef.current.length > 0) {
+      startLoopRef.current();
+    }
   }, [keepStains]);
 
+  const stopLoop = useCallback(() => {
+    if (rafRef.current !== null) {
+      cancelAnimationFrame(rafRef.current);
+      rafRef.current = null;
+    }
+  }, []);
+
   useImperativeHandle(ref, () => ({
-    sprayInk(originX: number, originY: number, intensity = 68) {
+    sprayInk(originX: number, originY: number, intensity = 64) {
       const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      const count = reducedMotion ? 22 : intensity;
+      const count = reducedMotion ? 20 : intensity;
 
       for (let i = 0; i < count; i++) {
         const angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.45;
@@ -74,7 +85,9 @@ export const InkCanvas = forwardRef<InkCanvasHandle, InkCanvasProps>(function In
         const isBigSplatter = Math.random() < 0.22;
         const radius = isBigSplatter ? 5 + Math.random() * 10 : 1.5 + Math.random() * 4.5;
 
-        const lobeCount = isBigSplatter ? 4 + Math.floor(Math.random() * 4) : 1 + Math.floor(Math.random() * 2);
+        const lobeCount = isBigSplatter
+          ? 4 + Math.floor(Math.random() * 4)
+          : 1 + Math.floor(Math.random() * 2);
         const lobes = Array.from({ length: lobeCount }, () => ({
           angle: Math.random() * Math.PI * 2,
           dist: radius * (0.7 + Math.random() * 1.15),
@@ -85,12 +98,12 @@ export const InkCanvas = forwardRef<InkCanvasHandle, InkCanvasProps>(function In
           x: originX + (Math.random() - 0.5) * 14,
           y: originY + (Math.random() - 0.5) * 14,
           vx: Math.cos(angle) * speed,
-          vy: Math.sin(angle) * speed - (Math.random() * 2.5),
+          vy: Math.sin(angle) * speed - Math.random() * 2.5,
           radius,
           color: colorSpec.fill,
           highlightColor: colorSpec.highlight,
           alpha: 0.96,
-          decay: 0.0065 + Math.random() * 0.007,
+          decay: 0.007 + Math.random() * 0.007,
           drag: 0.91 + Math.random() * 0.045,
           gravity: 0.16 + Math.random() * 0.12,
           dripSpeed: isBigSplatter ? 0.18 + Math.random() * 0.35 : 0,
@@ -103,13 +116,14 @@ export const InkCanvas = forwardRef<InkCanvasHandle, InkCanvasProps>(function In
         });
       }
 
-      // Cap total active particles to prevent runaway memory if spammed rapidly
-      if (dropletsRef.current.length > 520) {
-        dropletsRef.current.splice(0, dropletsRef.current.length - 520);
+      if (dropletsRef.current.length > 480) {
+        dropletsRef.current.splice(0, dropletsRef.current.length - 480);
       }
+      startLoopRef.current();
     },
     clearInk() {
       dropletsRef.current = [];
+      stopLoop();
       const canvas = canvasRef.current;
       if (canvas) {
         const ctx = canvas.getContext('2d');
@@ -118,7 +132,7 @@ export const InkCanvas = forwardRef<InkCanvasHandle, InkCanvasProps>(function In
         }
       }
     },
-  }));
+  }), [stopLoop]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -136,16 +150,19 @@ export const InkCanvas = forwardRef<InkCanvasHandle, InkCanvasProps>(function In
     };
 
     handleResize();
-    window.addEventListener('resize', handleResize);
+    window.addEventListener('resize', handleResize, { passive: true });
 
     const render = () => {
+      const droplets = dropletsRef.current;
       ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
-      const droplets = dropletsRef.current;
+      let needsNextFrame = false;
+
       for (let i = droplets.length - 1; i >= 0; i--) {
         const d = droplets[i];
 
         if (!d.settled) {
+          needsNextFrame = true;
           const prevX = d.x;
           const prevY = d.y;
           d.x += d.vx;
@@ -174,9 +191,13 @@ export const InkCanvas = forwardRef<InkCanvasHandle, InkCanvasProps>(function In
           d.settleTime += 1;
           if (d.dripLength < d.maxDrip) {
             d.dripLength += d.dripSpeed;
+            needsNextFrame = true;
           }
-          if (!keepStainsRef.current && d.settleTime > 42) {
-            d.alpha -= d.decay;
+          if (!keepStainsRef.current) {
+            needsNextFrame = true;
+            if (d.settleTime > 42) {
+              d.alpha -= d.decay;
+            }
           }
         }
 
@@ -188,20 +209,17 @@ export const InkCanvas = forwardRef<InkCanvasHandle, InkCanvasProps>(function In
         ctx.save();
         ctx.globalAlpha = Math.max(0, d.alpha);
 
-        // Main ink droplet
         ctx.fillStyle = d.color;
         ctx.beginPath();
         ctx.arc(d.x, d.y, d.radius, 0, Math.PI * 2);
         ctx.fill();
 
-        // Glossy rim for dark obsidian drops against #0a0a0a canvas
         if (d.highlightColor) {
           ctx.strokeStyle = d.highlightColor;
           ctx.lineWidth = 1;
           ctx.stroke();
         }
 
-        // Organic satellite splatter lobes
         for (const lobe of d.lobes) {
           const lx = d.x + Math.cos(lobe.angle) * lobe.dist;
           const ly = d.y + Math.sin(lobe.angle) * lobe.dist;
@@ -210,7 +228,6 @@ export const InkCanvas = forwardRef<InkCanvasHandle, InkCanvasProps>(function In
           ctx.fill();
         }
 
-        // Viscous drip trail once landed
         if (d.dripLength > 1) {
           ctx.beginPath();
           ctx.moveTo(d.x - d.radius * 0.28, d.y);
@@ -224,16 +241,24 @@ export const InkCanvas = forwardRef<InkCanvasHandle, InkCanvasProps>(function In
         ctx.restore();
       }
 
-      rafRef.current = requestAnimationFrame(render);
+      if (needsNextFrame && droplets.length > 0) {
+        rafRef.current = requestAnimationFrame(render);
+      } else {
+        rafRef.current = null;
+      }
     };
 
-    rafRef.current = requestAnimationFrame(render);
+    startLoopRef.current = () => {
+      if (rafRef.current === null) {
+        rafRef.current = requestAnimationFrame(render);
+      }
+    };
 
     return () => {
       window.removeEventListener('resize', handleResize);
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      stopLoop();
     };
-  }, []);
+  }, [stopLoop]);
 
   return (
     <canvas

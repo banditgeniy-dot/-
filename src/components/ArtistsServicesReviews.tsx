@@ -9,7 +9,7 @@ export function ArtistsServicesReviews({ onSelectArtistToBook }: ArtistsServices
   return (
     <>
       {/* Artists Section */}
-      <section id="artists" className="border-t border-white/10 bg-[#0a0a0a] py-20 lg:py-28">
+      <section id="artists" className="cv-auto border-t border-white/10 bg-[#0a0a0a] py-20 lg:py-28">
         <div className="mx-auto max-w-[1440px] px-6 lg:px-12">
           <div className="flex flex-col justify-between gap-4 border-b border-white/10 pb-8 md:flex-row md:items-end">
             <div>
@@ -37,6 +37,10 @@ export function ArtistsServicesReviews({ onSelectArtistToBook }: ArtistsServices
                     <img
                       src={artist.image}
                       alt={`${artist.name} — ${artist.role}`}
+                      width={560}
+                      height={560}
+                      loading="lazy"
+                      decoding="async"
                       referrerPolicy="no-referrer"
                       className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
                     />
@@ -58,7 +62,7 @@ export function ArtistsServicesReviews({ onSelectArtistToBook }: ArtistsServices
                 </div>
 
                 <div className="border-t border-white/10 px-6 py-4">
-                  <p className="text-xs text-zinc-500">{artist.specialty}</p>
+                  <p className="text-xs text-zinc-400">{artist.specialty}</p>
                   <button
                     type="button"
                     onClick={() => onSelectArtistToBook(artist.name)}
@@ -75,7 +79,7 @@ export function ArtistsServicesReviews({ onSelectArtistToBook }: ArtistsServices
       </section>
 
       {/* Services Section */}
-      <section id="services" className="border-t border-white/10 bg-[#111111] py-20 lg:py-28">
+      <section id="services" className="cv-auto border-t border-white/10 bg-[#111111] py-20 lg:py-28">
         <div className="mx-auto max-w-[1440px] px-6 lg:px-12">
           <div className="grid grid-cols-1 gap-10 lg:grid-cols-12">
             <div className="lg:col-span-4">
@@ -125,7 +129,7 @@ export function ArtistsServicesReviews({ onSelectArtistToBook }: ArtistsServices
       </section>
 
       {/* Client Reviews Section */}
-      <section id="reviews" className="border-t border-white/10 bg-[#0a0a0a] py-20 lg:py-28">
+      <section id="reviews" className="cv-auto border-t border-white/10 bg-[#0a0a0a] py-20 lg:py-28">
         <div className="mx-auto max-w-[1440px] px-6 lg:px-12">
           <div className="border-b border-white/10 pb-8">
             <p className="text-xs font-medium tracking-widest text-[#dc2626] uppercase">
@@ -151,7 +155,7 @@ export function ArtistsServicesReviews({ onSelectArtistToBook }: ArtistsServices
                     {review.clientName}
                   </p>
                   <p className="mt-1 text-xs text-zinc-400">{review.commission}</p>
-                  <div className="mt-2 flex items-center gap-2 text-xs text-zinc-500">
+                  <div className="mt-2 flex items-center gap-2 text-xs text-zinc-400">
                     <span>Мастер: {review.artist}</span>
                     <span aria-hidden="true">·</span>
                     <span className="font-mono tabular-nums text-[#dc2626]">

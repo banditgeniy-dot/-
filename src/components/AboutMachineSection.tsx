@@ -26,7 +26,7 @@ export function AboutMachineSection({
   };
 
   return (
-    <section id="about" className="border-t border-white/10 bg-[#0a0a0a] py-20 lg:py-28">
+    <section id="about" className="cv-auto border-t border-white/10 bg-[#0a0a0a] py-20 lg:py-28">
       <div className="mx-auto max-w-[1440px] px-6 lg:px-12">
         <div className="grid grid-cols-1 items-stretch gap-10 lg:grid-cols-12 lg:gap-12">
           {/* Left Column: Studio Manifesto & Craft Metrics */}
@@ -94,6 +94,10 @@ export function AboutMachineSection({
               <img
                 src={STUDIO_MEDIA.tattooMachine}
                 alt="Роторная тату-машинка Mast Flip Pro в чёрных перчатках с фиолетовым картриджем"
+                width={800}
+                height={800}
+                loading="lazy"
+                decoding="async"
                 referrerPolicy="no-referrer"
                 className="h-full w-full scale-110 object-cover object-[65%_35%] transition-transform duration-500 group-hover:scale-[1.13]"
               />

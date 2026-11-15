@@ -55,7 +55,7 @@ export function GallerySection({ onSelectStyleToBook }: GallerySectionProps) {
   };
 
   return (
-    <section id="gallery" className="border-t border-white/10 bg-[#0a0a0a] py-20 lg:py-28">
+    <section id="gallery" className="cv-auto border-t border-white/10 bg-[#0a0a0a] py-20 lg:py-28">
       <div className="mx-auto max-w-[1440px] px-6 lg:px-12">
         {/* Section Header + Filter Controls */}
         <div className="flex flex-col justify-between gap-6 border-b border-white/10 pb-8 lg:flex-row lg:items-end">
@@ -119,6 +119,10 @@ export function GallerySection({ onSelectStyleToBook }: GallerySectionProps) {
                     <img
                       src={work.image}
                       alt={`${work.title} — ${work.style}, мастер ${work.artist}`}
+                      width={720}
+                      height={960}
+                      loading="lazy"
+                      decoding="async"
                       referrerPolicy="no-referrer"
                       className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.06]"
                     />
@@ -204,15 +208,15 @@ export function GallerySection({ onSelectStyleToBook }: GallerySectionProps) {
 
                 <div className="mt-6 space-y-3 border-t border-white/10 pt-5 text-sm">
                   <div className="flex items-center justify-between">
-                    <span className="text-zinc-500">Мастер</span>
+                    <span className="text-zinc-400">Мастер</span>
                     <span className="font-medium text-white">{selectedWork.artist}</span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-zinc-500">Зона нанесения</span>
+                    <span className="text-zinc-400">Зона нанесения</span>
                     <span className="font-medium text-white">{selectedWork.placement}</span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-zinc-500">Время работы</span>
+                    <span className="text-zinc-400">Время работы</span>
                     <span className="font-mono tabular-nums text-white">
                       {selectedWork.sessions}
                     </span>
